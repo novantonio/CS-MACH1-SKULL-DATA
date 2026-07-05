@@ -455,17 +455,19 @@ if "logger_data" in st.session_state:
     ax3.plot(
         summary_df_sorted['datetime'],
         summary_df_sorted['temperature_mean'],
-        marker='o',
+        marker='.',
         linestyle='-',
-        label='Temperatura media'
+        color = 'r',
+        label='Temperature mean'
     )
 
     ax3.plot(
         summary_df_sorted['datetime'],
         summary_df_sorted['temperature_median'],
-        marker='s',
+        marker='+',
         linestyle='--',
-        label='Temperatura mediana'
+        color = 'b'
+        label='Temperature median'
     )
 
     # etichette con nome file su ogni punto
@@ -477,7 +479,7 @@ if "logger_data" in st.session_state:
             textcoords="offset points",
             xytext=(0, 8),
             ha='center',
-            fontsize=7,
+            fontsize=5,
             rotation=30
         )
     '''
