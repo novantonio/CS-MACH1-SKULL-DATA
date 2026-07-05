@@ -466,7 +466,7 @@ if "logger_data" in st.session_state:
         summary_df_sorted['temperature_median'],
         marker='+',
         linestyle='--',
-        color = 'b'
+        color = 'b',
         label='Temperature median'
     )
 
