@@ -319,7 +319,7 @@ if "logger_data" in st.session_state:
 
     # CORA reference
     ax.scatter(cora_monthly_stats['month'], cora_monthly_stats['mean'], color = 'b', label='Monthly Mean Temperature')
-    ax.plot(cora_monthly_stats['month'], cora_monthly_stats['mean'], color = 'b' )
+    ax.plot(cora_monthly_stats['month'], cora_monthly_stats['mean'], color = 'b' , linestyle = '--')
     ax.errorbar(cora_monthly_stats['month'], cora_monthly_stats['mean'], yerr=cora_monthly_stats['std'], fmt='o', capsize=3, color = 'b', label='Monthly Standard Deviation')
 
     # -----------------------------------------------------
