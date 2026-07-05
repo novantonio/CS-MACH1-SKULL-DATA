@@ -318,9 +318,9 @@ if "logger_data" in st.session_state:
     fig, ax = plt.subplots(figsize=(10, 5))
 
     # CORA reference
-    ax.scatter(cora_monthly_stats['month'], cora_monthly_stats['mean'], label='Monthly Mean Temperature')
-    ax.plot(cora_monthly_stats['month'], cora_monthly_stats['mean'])
-    ax.errorbar(cora_monthly_stats['month'], cora_monthly_stats['mean'], yerr=cora_monthly_stats['std'], fmt='o', capsize=3, label='Monthly Standard Deviation')
+    ax.scatter(cora_monthly_stats['month'], cora_monthly_stats['mean'], color = 'b', label='Monthly Mean Temperature')
+    ax.plot(cora_monthly_stats['month'], cora_monthly_stats['mean'], color = 'b' )
+    ax.errorbar(cora_monthly_stats['month'], cora_monthly_stats['mean'], yerr=cora_monthly_stats['std'], fmt='o', capsize=3, color = 'b', label='Monthly Standard Deviation')
 
     # -----------------------------------------------------
     # LOGGER STAR MARKERS
