@@ -495,6 +495,95 @@ if "logger_data" in st.session_state:
 
     st.pyplot(fig3)
     st.markdown("---")
+
+    # -----------------------------------------------------
+    # 📈 TIMESERIES PLOT DEL SUMMARY + CORA CLIMATOLOGIA
+    # -----------------------------------------------------
+    st.markdown("### 📈 Timeseries delle statistiche")
+
+    summary_df_sorted = summary_df.sort_values("datetime")
+
+    # -------------------------------------------------
+    # COSTRUZIONE SERIE CORA RIPETUTA SUGLI ANNI COPERTI
+    # -------------------------------------------------
+    start_year = summary_df_sorted['datetime'].min().year
+    end_year = summary_df_sorted['datetime'].max().year
+
+    cora_repeated_rows = []
+
+    for year in range(start_year, end_year + 1):
+        for _, row in cora_monthly_stats.iterrows():
+            month = int(row['month'])
+            cora_repeated_rows.append({
+                "date": pd.Timestamp(year=year, month=month, day=15),
+                "mean": row['mean'],
+                "std": row['std']
+            })
+
+    cora_repeated_df = pd.DataFrame(cora_repeated_rows).sort_values("date")
+
+    # -------------------------------------------------
+    # PLOT
+    # -------------------------------------------------
+    fig4, ax4 = plt.subplots(figsize=(10, 5))
+
+    # banda climatologica CORA (mean ± std)
+    ax4.fill_between(
+        cora_repeated_df['date'],
+        cora_repeated_df['mean'] - cora_repeated_df['std'],
+        cora_repeated_df['mean'] + cora_repeated_df['std'],
+        alpha=0.2,
+        label='CORA ± std'
+    )
+
+    ax4.plot(
+        cora_repeated_df['date'],
+        cora_repeated_df['mean'],
+        linestyle='-',
+        linewidth=1.5,
+        alpha=0.7,
+        label='CORA climatologia mensile'
+    )
+
+    # dati logger
+    ax4.plot(
+        summary_df_sorted['datetime'],
+        summary_df_sorted['temperature_mean'],
+        marker='o',
+        linestyle='-',
+        label='Temperatura media (logger)'
+    )
+
+    ax4.plot(
+        summary_df_sorted['datetime'],
+        summary_df_sorted['temperature_median'],
+        marker='s',
+        linestyle='--',
+        label='Temperatura mediana (logger)'
+    )
+
+    # etichette con nome file su ogni punto
+    for _, row in summary_df_sorted.iterrows():
+        ax4.annotate(
+            row['file_name'],
+            (row['datetime'], row['temperature_mean']),
+            textcoords="offset points",
+            xytext=(0, 8),
+            ha='center',
+            fontsize=7,
+            rotation=30
+        )
+
+    ax4.set_xlabel("Data")
+    ax4.set_ylabel("Temperatura [°C]")
+    ax4.set_title("Timeseries statistiche per file vs climatologia CORA")
+    ax4.legend()
+    ax4.grid(True)
+    fig4.autofmt_xdate()
+    fig4.tight_layout()
+
+    st.pyplot(fig4)
+    st.markdown("---")
     
     st.markdown(
         """
