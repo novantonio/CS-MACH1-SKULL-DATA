@@ -471,7 +471,7 @@ if "logger_data" in st.session_state:
     )
 
     # etichette con nome file su ogni punto
-    '''
+    """
     for _, row in summary_df_sorted.iterrows():
         ax3.annotate(
             row['file_name'],
@@ -482,7 +482,7 @@ if "logger_data" in st.session_state:
             fontsize=5,
             rotation=30
         )
-    '''
+    """
 
     ax3.set_xlabel("Date")
     ax3.set_ylabel("Temperature [°C]")
