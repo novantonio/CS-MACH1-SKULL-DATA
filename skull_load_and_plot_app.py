@@ -573,7 +573,130 @@ if "logger_data" in st.session_state:
 
     st.pyplot(fig4)
     st.markdown("---")
+
+    # =========================================================
+    # 🌊 SST MONTHLY MEANS DATAFRAME
+    # =========================================================
+    sst_data = [
+        {"month": 1,  "month_name": "Jan",    "sst_mean": 14.0},   # inverno
+        {"month": 2,  "month_name": "Feb",   "sst_mean": 13.5},   # inverno
+        {"month": 3,  "month_name": "Mar",      "sst_mean": 13.0},   # mese più freddo
+        {"month": 4,  "month_name": "Apr",     "sst_mean": 15.0},   # primavera
+        {"month": 5,  "month_name": "May",     "sst_mean": 17.5},   # primavera
+        {"month": 6,  "month_name": "Jun",     "sst_mean": 21.0},   # inizio estate
+        {"month": 7,  "month_name": "Jul",     "sst_mean": 24.0},   # piena estate
+        {"month": 8,  "month_name": "Aug",     "sst_mean": 26.0},   # massimo storico
+        {"month": 9,  "month_name": "Sep",  "sst_mean": 22.0},   # autunno inizio
+        {"month": 10, "month_name": "Oct",    "sst_mean": 19.5},   # autunno calo graduale
+        {"month": 11, "month_name": "Nov",   "sst_mean": 17.0},   # autunno calo graduale
+        {"month": 12, "month_name": "Dec",   "sst_mean": 15.0},   # autunno fine
+    ]
     
+    sst_df = pd.DataFrame(sst_data)
+
+    # -----------------------------------------------------
+    # 📈 TIMESERIES PLOT DEL SUMMARY + CORA + SST CLIMATOLOGIA
+    # -----------------------------------------------------
+    st.markdown("### 📈 Stats Timeseries ")
+
+    summary_df_sorted = summary_df.sort_values("datetime")
+
+    # -------------------------------------------------
+    # COSTRUZIONE SERIE CORA RIPETUTA SUGLI ANNI COPERTI
+    # -------------------------------------------------
+    start_year = summary_df_sorted['datetime'].min().year
+    end_year = summary_df_sorted['datetime'].max().year
+
+    cora_repeated_rows = []
+
+    for year in range(start_year, end_year + 1):
+        for _, row in cora_monthly_stats.iterrows():
+            month = int(row['month'])
+            cora_repeated_rows.append({
+                "date": pd.Timestamp(year=year, month=month, day=15),
+                "mean": row['mean'],
+                "std": row['std']
+            })
+
+    cora_repeated_df = pd.DataFrame(cora_repeated_rows).sort_values("date")
+
+    # -------------------------------------------------
+    # COSTRUZIONE SERIE SST RIPETUTA SUGLI ANNI COPERTI
+    # -------------------------------------------------
+    sst_repeated_rows = []
+
+    for year in range(start_year, end_year + 1):
+        for _, row in sst_df.iterrows():
+            month = int(row['month'])
+            sst_repeated_rows.append({
+                "date": pd.Timestamp(year=year, month=month, day=15),
+                "sst_mean": row['sst_mean']
+            })
+
+    sst_repeated_df = pd.DataFrame(sst_repeated_rows).sort_values("date")
+
+    # -------------------------------------------------
+    # PLOT
+    # -------------------------------------------------
+    fig5, ax5 = plt.subplots(figsize=(10, 5))
+
+    # banda climatologica CORA (mean ± std)
+    ax5.fill_between(
+        cora_repeated_df['date'],
+        cora_repeated_df['mean'] - cora_repeated_df['std'],
+        cora_repeated_df['mean'] + cora_repeated_df['std'],
+        alpha=0.2,
+        label='CORA ± std'
+    )
+
+    ax5.plot(
+        cora_repeated_df['date'],
+        cora_repeated_df['mean'],
+        linestyle='-',
+        linewidth=1.5,
+        alpha=0.7,
+        label='CORA climatologia mensile'
+    )
+
+    # climatologia SST
+    ax5.plot(
+        sst_repeated_df['date'],
+        sst_repeated_df['sst_mean'],
+        linestyle=':',
+        linewidth=2,
+        color='darkorange',
+        alpha=0.8,
+        label='SST climatologia mensile'
+    )
+
+    # dati logger
+    ax5.plot(
+        summary_df_sorted['datetime'],
+        summary_df_sorted['temperature_mean'],
+        marker='o',
+        linestyle='-',
+        label='Temperatura media (logger)'
+    )
+
+    ax5.plot(
+        summary_df_sorted['datetime'],
+        summary_df_sorted['temperature_median'],
+        marker='s',
+        linestyle='--',
+        label='Temperatura mediana (logger)'
+    )
+
+    ax5.set_xlabel("Date")
+    ax5.set_ylabel("Temperature [°C]")
+    ax5.set_title("Timeseries T")
+    ax5.legend()
+    ax5.grid(True)
+    fig5.autofmt_xdate()
+    fig5.tight_layout()
+
+    st.pyplot(fig5)
+    st.markdown("---")
+
     st.markdown(
         """
         <div style='text-align: center; color: grey; font-size: 13px;'>
