@@ -442,6 +442,54 @@ if "logger_data" in st.session_state:
         mime="text/csv"
     )
     st.markdown("---")
+
+    # -----------------------------------------------------
+    # 📈 TIMESERIES PLOT DEL SUMMARY
+    # -----------------------------------------------------
+    st.markdown("### 📈 Timeseries delle statistiche")
+
+    summary_df_sorted = summary_df.sort_values("datetime")
+
+    fig3, ax3 = plt.subplots(figsize=(10, 5))
+
+    ax3.plot(
+        summary_df_sorted['datetime'],
+        summary_df_sorted['temperature_mean'],
+        marker='o',
+        linestyle='-',
+        label='Temperatura media'
+    )
+
+    ax3.plot(
+        summary_df_sorted['datetime'],
+        summary_df_sorted['temperature_median'],
+        marker='s',
+        linestyle='--',
+        label='Temperatura mediana'
+    )
+
+    # etichette con nome file su ogni punto
+    for _, row in summary_df_sorted.iterrows():
+        ax3.annotate(
+            row['file_name'],
+            (row['datetime'], row['temperature_mean']),
+            textcoords="offset points",
+            xytext=(0, 8),
+            ha='center',
+            fontsize=7,
+            rotation=30
+        )
+
+    ax3.set_xlabel("Data")
+    ax3.set_ylabel("Temperatura [°C]")
+    ax3.set_title("Timeseries statistiche per file")
+    ax3.legend()
+    ax3.grid(True)
+    fig3.autofmt_xdate()
+    fig3.tight_layout()
+
+    st.pyplot(fig3)
+    st.markdown("---")
     
     st.markdown(
         """
