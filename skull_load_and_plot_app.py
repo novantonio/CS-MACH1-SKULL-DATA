@@ -549,16 +549,18 @@ if "logger_data" in st.session_state:
     ax4.plot(
         summary_df_sorted['datetime'],
         summary_df_sorted['temperature_mean'],
-        marker='o',
-        linestyle='-',
+        marker='+',
+        linestyle='--',
+        color = 'r',
         label='Temperatura (mean)'
     )
 
     ax4.plot(
         summary_df_sorted['datetime'],
         summary_df_sorted['temperature_median'],
-        marker='s',
+        marker='.',
         linestyle='--',
+        color = 'gray',
         label='Temperature (median)'
     )
     
