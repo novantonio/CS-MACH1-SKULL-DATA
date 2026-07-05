@@ -343,7 +343,7 @@ if "logger_data" in st.session_state:
         else:
             marker = 'o'   # fallback
         
-        ax.plot(d, tavg, marker=marker, markersize=20, linestyle='None', label=label)
+        ax.plot(d, tavg, marker=marker, markersize=10, linestyle='None', label=label)
 
     # -----------------------------------------------------
     # FORMAT
@@ -398,7 +398,7 @@ if "logger_data" in st.session_state:
             else:
                 marker = 'o'   # fallback
             
-            ax2.plot(d, tavg, marker=marker, markersize=20, linestyle='None', label=label)
+            ax2.plot(d, tavg, marker=marker, markersize=10, linestyle='None', label=label)
             #ax2.plot(d, tavg, '*', markersize=20, label=label)
     
     # Set labels and
@@ -409,8 +409,38 @@ if "logger_data" in st.session_state:
     fig2.tight_layout()
     st.pyplot(fig2)
 
-   # -----------------------------------------------------
-    
+    # -----------------------------------------------------
+    # -----------------------------------------------------
+    # 📊 SUMMARY STATISTICS CSV
+    # -----------------------------------------------------
+    st.markdown("---")
+    st.markdown("### 📊 Riepilogo statistiche per file")
+
+    summary_rows = []
+
+    for fn, sdata in logger_data.items():
+        summary_rows.append({
+            "file_name": fn,
+            "latitude": sdata['latitude'].iloc[0],
+            "longitude": sdata['longitude'].iloc[0],
+            "datetime": sdata['time'].iloc[0],
+            "temperature_mean": round(sdata['temperature'].mean(), 3),
+            "temperature_median": round(sdata['temperature'].median(), 3)
+        })
+
+    summary_df = pd.DataFrame(summary_rows)
+
+    st.dataframe(summary_df, use_container_width=True)
+
+    csv_buffer = io.StringIO()
+    summary_df.to_csv(csv_buffer, index=False)
+
+    st.download_button(
+        label="💾 Save processed data",
+        data=csv_buffer.getvalue(),
+        file_name="cs-mach1_summary_stats.csv",
+        mime="text/csv"
+    )
     st.markdown("---")
     
     st.markdown(
@@ -422,6 +452,7 @@ if "logger_data" in st.session_state:
         unsafe_allow_html=True
     )
     # -----------------------------------------------------
+    
 
     st.info("Note: ⭐ stars = 2025 data, ▲ triangles = 2026 data, ■ squares = 2027 data.")
   
