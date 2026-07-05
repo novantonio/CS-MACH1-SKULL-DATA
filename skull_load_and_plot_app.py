@@ -415,7 +415,7 @@ if "logger_data" in st.session_state:
     # 📊 SUMMARY STATISTICS CSV
     # -----------------------------------------------------
     st.markdown("---")
-    st.markdown("### 📊 Riepilogo statistiche per file")
+    st.markdown("### 📊 Summary")
 
     summary_rows = []
 
@@ -447,7 +447,7 @@ if "logger_data" in st.session_state:
     # -----------------------------------------------------
     # 📈 TIMESERIES PLOT DEL SUMMARY
     # -----------------------------------------------------
-    st.markdown("### 📈 Timeseries delle statistiche")
+    st.markdown("### 📈 Timeseries")
 
     summary_df_sorted = summary_df.sort_values("datetime")
 
@@ -499,7 +499,7 @@ if "logger_data" in st.session_state:
     # -----------------------------------------------------
     # 📈 TIMESERIES PLOT DEL SUMMARY + CORA CLIMATOLOGIA
     # -----------------------------------------------------
-    st.markdown("### 📈 Timeseries delle statistiche")
+    st.markdown("### 📈 Timeseries")
 
     summary_df_sorted = summary_df.sort_values("datetime")
 
@@ -552,7 +552,7 @@ if "logger_data" in st.session_state:
         marker='+',
         linestyle='--',
         color = 'r',
-        label='Temperatura (mean)'
+        label='Temperature (mean)'
     )
 
     ax4.plot(
@@ -655,7 +655,7 @@ if "logger_data" in st.session_state:
         linestyle='-',
         linewidth=1.5,
         alpha=0.7,
-        label='CORA'
+        label='Monthly CORA'
     )
 
     # climatologia SST
@@ -665,7 +665,7 @@ if "logger_data" in st.session_state:
         linestyle=':',
         color='darkorange',
         alpha=0.8,
-        label='SST climatologia mensile'
+        label='Monthly SST'
     )
 
     # dati logger
@@ -676,7 +676,7 @@ if "logger_data" in st.session_state:
         marker='+',
         linestyle='--',
         color = 'r',
-        label='Temperatura (mean)'
+        label='Temperature (mean)'
     )
 
     ax5.plot(
