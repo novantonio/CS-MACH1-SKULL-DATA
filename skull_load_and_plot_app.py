@@ -459,7 +459,7 @@ if "logger_data" in st.session_state:
         marker='.',
         linestyle='-',
         color = 'r',
-        label='Temperature mean'
+        label='Temperature (mean)'
     )
 
     ax3.plot(
@@ -468,7 +468,7 @@ if "logger_data" in st.session_state:
         marker='+',
         linestyle='--',
         color = 'b',
-        label='Temperature median'
+        label='Temperature (median)'
     )
 
     # etichette con nome file su ogni punto
@@ -542,7 +542,7 @@ if "logger_data" in st.session_state:
         linestyle='-',
         linewidth=1.5,
         alpha=0.7,
-        label='CORA climatologia mensile'
+        label='CORA'
     )
 
     # dati logger
@@ -551,7 +551,7 @@ if "logger_data" in st.session_state:
         summary_df_sorted['temperature_mean'],
         marker='o',
         linestyle='-',
-        label='Temperatura media (logger)'
+        label='Temperatura (mean)'
     )
 
     ax4.plot(
@@ -559,24 +559,11 @@ if "logger_data" in st.session_state:
         summary_df_sorted['temperature_median'],
         marker='s',
         linestyle='--',
-        label='Temperatura mediana (logger)'
+        label='Temperature (median)'
     )
-
-    # etichette con nome file su ogni punto
-    for _, row in summary_df_sorted.iterrows():
-        ax4.annotate(
-            row['file_name'],
-            (row['datetime'], row['temperature_mean']),
-            textcoords="offset points",
-            xytext=(0, 8),
-            ha='center',
-            fontsize=7,
-            rotation=30
-        )
-
-    ax4.set_xlabel("Data")
-    ax4.set_ylabel("Temperatura [°C]")
-    ax4.set_title("Timeseries statistiche per file vs climatologia CORA")
+    
+    ax4.set_xlabel("Date")
+    ax4.set_ylabel("Temperature [°C]")
     ax4.legend()
     ax4.grid(True)
     fig4.autofmt_xdate()
