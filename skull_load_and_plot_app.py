@@ -655,7 +655,7 @@ if "logger_data" in st.session_state:
         linestyle='-',
         linewidth=1.5,
         alpha=0.7,
-        label='CORA climatologia mensile'
+        label='CORA'
     )
 
     # climatologia SST
@@ -663,27 +663,29 @@ if "logger_data" in st.session_state:
         sst_repeated_df['date'],
         sst_repeated_df['sst_mean'],
         linestyle=':',
-        linewidth=2,
         color='darkorange',
         alpha=0.8,
         label='SST climatologia mensile'
     )
 
     # dati logger
+    # dati logger
     ax5.plot(
         summary_df_sorted['datetime'],
         summary_df_sorted['temperature_mean'],
-        marker='o',
-        linestyle='-',
-        label='Temperatura media (logger)'
+        marker='+',
+        linestyle='--',
+        color = 'r',
+        label='Temperatura (mean)'
     )
 
     ax5.plot(
         summary_df_sorted['datetime'],
         summary_df_sorted['temperature_median'],
-        marker='s',
+        marker='.',
         linestyle='--',
-        label='Temperatura mediana (logger)'
+        color = 'gray',
+        label='Temperature (median)'
     )
 
     ax5.set_xlabel("Date")
